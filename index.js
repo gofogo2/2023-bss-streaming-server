@@ -1,9 +1,11 @@
+require('dotenv').config();
 const app = require('express')(),
   server = require('http').Server(app),
   io = require('socket.io')(server),
   rtsp = require('rtsp-ffmpeg');
-server.listen(5500); //열고싶은 포트번호 입력
-var uri = 'rtsp://daamdaam:daam1015@192.168.0.179:554/stream1', 
+server.listen(5501); //열고싶은 포트번호 입력
+var uri =  process.env.STREAMING_URI;
+console.log(uri);
   stream = new rtsp.FFMpeg({input: uri});
 io.on('connection', function(socket) {
   var pipeStream = function(data) {
@@ -17,4 +19,4 @@ io.on('connection', function(socket) {
 app.get('/', function (req, res) {
     console.log('start');
   res.sendFile(__dirname + '/index.html');
-});
+}); 
